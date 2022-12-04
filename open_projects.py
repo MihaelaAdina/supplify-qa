@@ -6,7 +6,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-
 class TestProjects(unittest.TestCase):
 
     # initialization of webdriver
@@ -15,18 +14,14 @@ class TestProjects(unittest.TestCase):
         self.driver.set_window_size(1370, 900)
         self.driver.get("https://staging.getchainify.com")
 
-    def open_new_project(self):
+    def go_to_project_card(self, project_title):
         driver = self.driver
-        open_new_project = driver.find_element(By.LINK_TEXT, 'TEST123')
+        open_new_project = driver.find_element(By.LINK_TEXT, project_title)
         open_new_project.click()
 
-    def test_whatever(self):
-        # get driver
+    def login(self):
         driver = self.driver
-
-        # login
         driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div[1]/div/div/div/div[2]/div[3]/button').click()
-        # self.assertEqual(select_searchbar.tag_name, 'input')
 
         email_address = driver.find_element(By.NAME, "username")
         email_address.send_keys('dailyinspo13@gmail.com')
@@ -35,23 +30,22 @@ class TestProjects(unittest.TestCase):
         password.send_keys('Tik1234tok' + Keys.ENTER)
         driver.implicitly_wait(10)
 
-        open_projects_button = driver.find_element(By.LINK_TEXT, 'Open Leads')
-        open_projects_button.click()
-        driver.implicitly_wait(10)
+    def accept_cookie_policy(self):
+        driver = self.driver
+        cookies_button = driver.find_element(By.ID, 'rcc-confirm-button')
+        cookies_button.click()
 
+    def create_project(self):
+        driver = self.driver
         add_project = driver.find_element(By.ID, 'add-company')
         add_project.click()
         time.sleep(5)
         page_title = driver.find_element(By.CSS_SELECTOR, 'h3')
         self.assertEqual(page_title.text, "New project")
-        # self.assertTrue("New project" in driver.page_source)
 
         details_subtitle = driver.find_element(By.CSS_SELECTOR, 'h4')
         self.assertEqual(details_subtitle.text, 'Details')
         driver.implicitly_wait(10)
-
-        cookies_button = driver.find_element(By.ID, 'rcc-confirm-button')
-        cookies_button.click()
 
         name_variable = 'TEST123'
         name_field = driver.find_element(By.ID, 'name')
@@ -90,7 +84,8 @@ class TestProjects(unittest.TestCase):
         budget_range.send_keys(budget_variable)
         time.sleep(5)
 
-        save_button = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/form/div[1]/div/button[1]')
+        save_button = driver.find_element(By.XPATH,
+                                          '//*[@id="__next"]/div[2]/div/div/div/div[1]/form/div[1]/div/button[1]')
         driver.execute_script("arguments[0].click();", save_button)
 
         toast_notif = driver.find_element(By.ID, 'notistack-snackbar')
@@ -99,19 +94,9 @@ class TestProjects(unittest.TestCase):
         open_projects_title = driver.find_element(By.CSS_SELECTOR, 'h3')
         self.assertEqual(open_projects_title.text, 'Open Leads')
 
-        open_new_project = driver.find_element(By.LINK_TEXT, 'TEST123')
-        open_new_project.click()
+        self.go_to_project_card('TEST123')
 
-        # edit_project = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[1]/div/button[1]')
-        # assert here
-        # driver.back()
         time.sleep(5)
-
-        # self.open_new_project()
-
-        # submit_solution = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[1]/div/button[2]')
-        # submit_solution.click()
-        # driver.back()
 
         self.assertTrue(name_variable in driver.page_source)
         self.assertTrue(description_variable in driver.page_source)
@@ -120,19 +105,9 @@ class TestProjects(unittest.TestCase):
         self.assertTrue(implementation_variable in driver.page_source)
         self.assertTrue(geography_variable in driver.page_source)
         self.assertTrue(budget_variable in driver.page_source)
-        
-        highlights_sub_title = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[4]/div[2]/div/div/div/div[1]/h4')
-        self.assertEqual(highlights_sub_title.text, "Highlights")
 
-        main_objectives_presence = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[4]/div[1]/div/div/div/div[1]/h4')
-        self.assertEqual(main_objectives_presence.text, 'Main objectives to accomplish')
-
-        solution_presence = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[4]/div[2]/div/div/div/div[2]/h2[1]')
-        self.assertEqual(solution_presence.text, "How many people would use the solution?")
-
-        budget_presence = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[4]/div[2]/div/div/div/div[2]/h2[4]')
-        self.assertEqual(budget_presence.text, "What is your budget range?")
-
+    def edit_project(self):
+        driver = self.driver
         edit_button = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[1]/div/button[1]')
         edit_button.click()
 
@@ -171,7 +146,8 @@ class TestProjects(unittest.TestCase):
         budget_edited.send_keys(Keys.COMMAND + 'a')
         budget_edited.send_keys(budget_edited_var)
 
-        save_edit_button = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/form/div[1]/div/button[1]')
+        save_edit_button = driver.find_element(By.XPATH,
+                                               '//*[@id="__next"]/div[2]/div/div/div/div[1]/form/div[1]/div/button[1]')
         save_edit_button.click()
         time.sleep(5)
 
@@ -186,11 +162,31 @@ class TestProjects(unittest.TestCase):
         self.assertTrue(geography_edited_var in driver.page_source)
         self.assertTrue(budget_edited_var in driver.page_source)
 
-        # breakpoint()
+    def test_whatever(self):
+        driver = self.driver
 
-        # name_field = driver.find_element(By.ID, "name")
-        # name_field.click()
-        # time.sleep(5)
+        self.login()
+        self.accept_cookie_policy()
+
+        open_projects_button = driver.find_element(By.LINK_TEXT, 'Open Leads')
+        open_projects_button.click()
+        driver.implicitly_wait(10)
+
+        self.create_project()
+
+        highlights_sub_title = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[4]/div[2]/div/div/div/div[1]/h4')
+        self.assertEqual(highlights_sub_title.text, "Highlights")
+
+        main_objectives_presence = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[4]/div[1]/div/div/div/div[1]/h4')
+        self.assertEqual(main_objectives_presence.text, 'Main objectives to accomplish')
+
+        solution_presence = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[4]/div[2]/div/div/div/div[2]/h2[1]')
+        self.assertEqual(solution_presence.text, "How many people would use the solution?")
+
+        budget_presence = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[4]/div[2]/div/div/div/div[2]/h2[4]')
+        self.assertEqual(budget_presence.text, "What is your budget range?")
+
+        self.edit_project()
 
     # cleanup method called after every test performed
     def tearDown(self):
