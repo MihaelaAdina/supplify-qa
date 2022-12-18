@@ -35,11 +35,25 @@ class TestProjects(unittest.TestCase):
         cookies_button = driver.find_element(By.ID, 'rcc-confirm-button')
         cookies_button.click()
 
+    def input_type_value(self, input_id, value):
+        driver = self.driver
+        input = driver.find_element(By.ID, input_id)
+        input.click()
+        input.send_keys(value)
+
+    def edit_input_type_value(self, input_id, value):
+        driver = self.driver
+        input = driver.find_element(By.ID, input_id)
+        input.click()
+        input.send_keys(Keys.COMMAND + "a")
+        input.send_keys(value)
+
     def create_project(self):
         driver = self.driver
         add_project = driver.find_element(By.ID, 'add-company')
         add_project.click()
         time.sleep(5)
+
         page_title = driver.find_element(By.CSS_SELECTOR, 'h3')
         self.assertEqual(page_title.text, "New project")
 
@@ -47,41 +61,26 @@ class TestProjects(unittest.TestCase):
         self.assertEqual(details_subtitle.text, 'Details')
         driver.implicitly_wait(10)
 
-        name_variable = 'TEST123'
-        name_field = driver.find_element(By.ID, 'name')
-        name_field.click()
-        name_field.send_keys(name_variable)
+        input_name_value = 'TEST123'
+        self.input_type_value('name', input_name_value)
 
-        description_variable = 'TEST AAAAAAAAAAAAAAAAA'
-        description_field = driver.find_element(By.ID, 'description')
-        description_field.click()
-        description_field.send_keys(description_variable)
+        input_description_value = 'TEST AAAAAAAAAAAAAAAAA'
+        self.input_type_value('description', input_description_value)
 
-        objectives_variable = 'none'
-        objectives_field = driver.find_element(By.ID, 'objectives')
-        objectives_field.click()
-        objectives_field.send_keys(objectives_variable)
+        input_objectives_value = 'none'
+        self.input_type_value('objectives', input_objectives_value)
 
-        # nu am mai pus send.keys, am creat o variabila si i-am dat atribut valoarea ce va fi introdusa in campuri
-        people_variable = '14'
-        people_solution_field = driver.find_element(By.ID, 'nr_people_using_solution')
-        people_solution_field.click()
-        people_solution_field.send_keys(people_variable)
+        input_people_value = '14'
+        self.input_type_value('nr_people_using_solution', input_people_value)
 
-        implementation_variable = '2022'
-        implementation_date = driver.find_element(By.ID, 'implementation_start_date')
-        implementation_date.click()
-        implementation_date.send_keys(implementation_variable)
+        input_implementation_value = '2022'
+        self.input_type_value('implementation_start_date', input_implementation_value)
 
-        geography_variable = 'Dubai'
-        geography_field = driver.find_element(By.ID, 'geography')
-        geography_field.click()
-        geography_field.send_keys(geography_variable)
+        input_geography_value = 'Dubai'
+        self.input_type_value('geography', input_geography_value)
 
-        budget_variable = '200m'
-        budget_range = driver.find_element(By.ID, 'budget_range')
-        budget_range.click()
-        budget_range.send_keys(budget_variable)
+        input_budget_value = '200m'
+        self.input_type_value('budget_range', input_budget_value)
         time.sleep(5)
 
         save_button = driver.find_element(By.XPATH,
@@ -98,53 +97,40 @@ class TestProjects(unittest.TestCase):
 
         time.sleep(5)
 
-        self.assertTrue(name_variable in driver.page_source)
-        self.assertTrue(description_variable in driver.page_source)
-        self.assertTrue(objectives_variable in driver.page_source)
-        self.assertTrue(people_variable in driver.page_source)
-        self.assertTrue(implementation_variable in driver.page_source)
-        self.assertTrue(geography_variable in driver.page_source)
-        self.assertTrue(budget_variable in driver.page_source)
+        self.assertTrue(input_name_value in driver.page_source)
+        self.assertTrue(input_description_value in driver.page_source)
+        self.assertTrue(input_objectives_value in driver.page_source)
+        self.assertTrue(input_people_value in driver.page_source)
+        self.assertTrue(input_implementation_value in driver.page_source)
+        self.assertTrue(input_geography_value in driver.page_source)
+        self.assertTrue(input_budget_value in driver.page_source)
+
 
     def edit_project(self):
         driver = self.driver
         edit_button = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div[1]/div[1]/div/button[1]')
         edit_button.click()
 
-        project_name_variable = 'project_name_edit'
-        project_name_edit = driver.find_element(By.ID, 'name')
-        project_name_edit.send_keys(Keys.COMMAND + "a")
-        project_name_edit.send_keys(project_name_variable)
+        input_edit_name_value = 'project_name_edit'
+        self.edit_input_type_value('name', input_edit_name_value )
 
-        description_edited_variable = 'description_edited'
-        description_edited = driver.find_element(By.ID, 'description')
-        description_edited.send_keys(Keys.COMMAND + 'a')
-        description_edited.send_keys(description_edited_variable)
+        input_edit_description_value = 'description_edited'
+        self.edit_input_type_value('description', input_edit_description_value)
 
-        objectives_edited_var = 'objectives_edited'
-        objectives_edited = driver.find_element(By.ID, 'objectives')
-        objectives_edited.send_keys(Keys.COMMAND + 'a')
-        objectives_edited.send_keys(objectives_edited_var)
+        input_edit_objectives_value = 'objectives_edited'
+        self.edit_input_type_value('objectives', input_edit_objectives_value)
 
-        people_edited_var = 'people_edited'
-        people_edited = driver.find_element(By.ID, 'nr_people_using_solution')
-        people_edited.send_keys(Keys.COMMAND + 'a')
-        people_edited.send_keys(people_edited_var)
+        input_edit_people_value = 'people_edited'
+        self.edit_input_type_value('nr_people_using_solution', input_edit_people_value)
 
-        implementation_edited_var = 'implementation_edited'
-        implementation_edited = driver.find_element(By.ID, 'implementation_start_date')
-        implementation_edited.send_keys(Keys.COMMAND + 'a')
-        implementation_edited.send_keys(implementation_edited_var)
+        input_edit_implementation_value = 'implementation_edited'
+        self.edit_input_type_value('implementation_start_date', input_edit_implementation_value)
 
-        geography_edited_var = 'geography_edited'
-        geography_edited = driver.find_element(By.ID, 'geography')
-        geography_edited.send_keys(Keys.COMMAND + 'a')
-        geography_edited.send_keys(geography_edited_var)
+        input_edit_geography_value = 'geography_edited'
+        self.edit_input_type_value('geography', input_edit_geography_value)
 
-        budget_edited_var = 'budget_edited'
-        budget_edited = driver.find_element(By.ID, 'budget_range')
-        budget_edited.send_keys(Keys.COMMAND + 'a')
-        budget_edited.send_keys(budget_edited_var)
+        input_edit_budget_value = 'budget_edited'
+        self.edit_input_type_value('budget_range', input_edit_budget_value)
 
         save_edit_button = driver.find_element(By.XPATH,
                                                '//*[@id="__next"]/div[2]/div/div/div/div[1]/form/div[1]/div/button[1]')
@@ -154,13 +140,13 @@ class TestProjects(unittest.TestCase):
         toast_notif_edited = driver.find_element(By.XPATH, '//*[@id="notistack-snackbar"]')
 
         self.assertEqual(toast_notif_edited.text, 'Project updated successfully!')
-        self.assertTrue(project_name_variable in driver.page_source)
-        self.assertTrue(description_edited_variable in driver.page_source)
-        self.assertTrue(objectives_edited_var in driver.page_source)
-        self.assertTrue(people_edited_var in driver.page_source)
-        self.assertTrue(implementation_edited_var in driver.page_source)
-        self.assertTrue(geography_edited_var in driver.page_source)
-        self.assertTrue(budget_edited_var in driver.page_source)
+        self.assertTrue(input_edit_name_value in driver.page_source)
+        self.assertTrue(input_edit_description_value in driver.page_source)
+        self.assertTrue(input_edit_objectives_value in driver.page_source)
+        self.assertTrue(input_edit_people_value in driver.page_source)
+        self.assertTrue(input_edit_implementation_value in driver.page_source)
+        self.assertTrue(input_edit_geography_value in driver.page_source)
+        self.assertTrue(input_edit_budget_value in driver.page_source)
 
     def test_whatever(self):
         driver = self.driver
