@@ -1,10 +1,17 @@
+import os
 import time
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
+from dotenv import load_dotenv
+from os.path import join, dirname
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+SUPPLIFY_USERNAME = os.environ.get("SUPPLIFY_USERNAME")
+SUPPLIFY_PASSWORD = os.environ.get("SUPPLIFY_PASSWORD")
 
 class TestProjects(unittest.TestCase):
 
@@ -24,10 +31,10 @@ class TestProjects(unittest.TestCase):
         driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div[1]/div/div/div/div[2]/div[3]/button').click()
 
         email_address = driver.find_element(By.NAME, "username")
-        email_address.send_keys('dailyinspo13@gmail.com')
+        email_address.send_keys(SUPPLIFY_USERNAME)
 
         password = driver.find_element(By.NAME, 'password')
-        password.send_keys('Tik1234tok' + Keys.ENTER)
+        password.send_keys(SUPPLIFY_PASSWORD + Keys.ENTER)
         driver.implicitly_wait(10)
 
     def accept_cookie_policy(self):
