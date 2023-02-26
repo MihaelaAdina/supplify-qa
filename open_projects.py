@@ -14,6 +14,7 @@ SUPPLIFY_USERNAME = os.environ.get("SUPPLIFY_USERNAME")
 SUPPLIFY_PASSWORD = os.environ.get("SUPPLIFY_PASSWORD")
 
 class TestProjects(unittest.TestCase):
+
     # initialization of webdriver
     def setUp(self):
         self.driver = webdriver.Chrome()
